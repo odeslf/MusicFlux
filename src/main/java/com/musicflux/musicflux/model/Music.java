@@ -1,11 +1,11 @@
 package com.musicflux.musicflux.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.Set;
+
+@Builder
 @Entity
 @Table(name = "music")
 @Getter
@@ -24,5 +24,12 @@ public class Music {
     @Column(nullable = false)
     private Integer duration;
 
-    //private Album Album;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "album_id")
+    private Album album;
+
+    @ManyToMany
+    @JoinTable(name = "music_artist",joinColumns = @JoinColumn(name="music_id"),
+    inverseJoinColumns = @JoinColumn(name = "artist_id"))
+    private Set<Artist> artists;
 }
